@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Poppins:wght@500&display=swap');
+
+body{
+    font-family: 'Poppins', sans-serif;
+    margin: 20px;
+}
+
+.centered-content {
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    text-align: center; 
+    margin: 5px;
+}
+
+
+.notes-list {
+    list-style: none;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.note-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin-bottom: 10px;
+    align-items: center;
+    width: 500px;
+}
+
+.note-item a {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.title{
+    text-transform: uppercase;
+    margin: 10px;
+    padding: 5px;
+    height: 50px;
+    width: 400px;
+    border: 2px solid black;
+    font-weight: bolder;
+}
+
+.content{
+    margin: 10px;
+    padding: 5px;
+    max-height: none;
+    overflow: visible;
+    width: 400px;
+    border: 2px solid black;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    gap: 10px;
+}
+
+a{
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+
+form{
+    margin: 10px;
+}
+
+form input, button {
+    margin: 10px;
+}
+

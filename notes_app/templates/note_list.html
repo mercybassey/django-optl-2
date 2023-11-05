@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Notes</h1>
+<button><a href="{% url 'note_create' %}">Create a new note</a></button>
+<div class="centered-content">
+        <ul class="notes-list">
+            {% for note in notes %}
+            <li class="note-item">
+                <div class="title">
+                    <p><a href="{% url 'note_detail' note.pk %}" title="title">{{ note.title }}</a></p>
+                </div>
+                <div class="content" title="content">
+                    <p>{{ note.content }}</p>
+                </div>
+                <div class="buttons">
+                    <button><a href="{% url 'note_update' note.pk %}" >Edit this note</a></button> 
+                    <button><a href="{% url 'note_delete' note.pk %}" >Delete this note</a></button>
+                </div>
+            </li>
+            {% empty %}
+            <p>No notes available.</p>
+            {% endfor %}
+        </ul>
+</div>
+{% endblock %}
