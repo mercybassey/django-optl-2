@@ -3,7 +3,7 @@ from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
 from opentelemetry.sdk.resources import Resource  
-import logging
+
 
 # Define a Resource with a service name
 resource = Resource(attributes={"service.name": "django-notes-app"})
@@ -22,7 +22,7 @@ metrics.set_meter_provider(meter_provider)
 meter = metrics.get_meter(__name__)
 
 # Define metrics
-response_times = meter.create_histogram("response_times", description="Response times of Django views")
+response_times = meter.create_histogram("response_times", description="Response times of Django views", unit="ms")
 
 
 

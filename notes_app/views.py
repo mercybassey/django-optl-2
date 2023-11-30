@@ -15,9 +15,9 @@ def note_list(request):
         span_context = span.get_span_context()
         trace_id = format(span_context.trace_id, "032x")
         span_id = format(span_context.span_id, "016x")
-        logger.info("Listing all notes", extra={"trace_id": trace_id, "span_id": span_id})
         notes = Note.objects.all()
-        response_times.record(time.time() - start_time)
+        elapsed_time = time.time() - start_time
+        response_times.record(elapsed_time, {"http.method": request.method, "trace_id": trace_id, "span_id": span_id})
         return render(request, 'note_list.html', {'notes': notes})
 
 def note_create(request):
@@ -30,13 +30,13 @@ def note_create(request):
             form = NoteForm(request.POST)
             if form.is_valid():
                 form.save()
-                logger.info("Created a new note", extra={"trace_id": trace_id, "span_id": span_id})
-                response_times.record(time.time() - start_time)
+                elapsed_time = time.time() - start_time
+                response_times.record(elapsed_time, {"http.method": request.method, "trace_id": trace_id, "span_id": span_id})
                 return redirect('note_list')
         else:
             form = NoteForm()
-        logger.info("Rendering note creation form", extra={"trace_id": trace_id, "span_id": span_id})
-        response_times.record(time.time() - start_time)
+        elapsed_time = time.time() - start_time
+        response_times.record(elapsed_time, {"http.method": request.method, "trace_id": trace_id, "span_id": span_id})
         return render(request, 'note_create.html', {'form': form})
 
 def note_update(request, pk):
@@ -49,14 +49,14 @@ def note_update(request, pk):
         if request.method == "POST":
             form = NoteForm(request.POST, instance=note)
             if form.is_valid():
-                logger.info(f"Updated note with id {pk}", extra={"trace_id": trace_id, "span_id": span_id})
                 form.save()
-                response_times.record(time.time() - start_time)
+                elapsed_time = time.time() - start_time
+                response_times.record(elapsed_time, {"http.method": request.method, "trace_id": trace_id, "span_id": span_id})
                 return redirect('note_list')
         else:
             form = NoteForm(instance=note)
-        logger.info(f"Rendering note update form for note id {pk}", extra={"trace_id": trace_id, "span_id": span_id})
-        response_times.record(time.time() - start_time)
+        elapsed_time = time.time() - start_time
+        response_times.record(elapsed_time, {"http.method": request.method, "trace_id": trace_id, "span_id": span_id})
         return render(request, 'note_update.html', {'form': form})
 
 def note_delete(request, pk):
@@ -65,14 +65,14 @@ def note_delete(request, pk):
         span_context = span.get_span_context()
         trace_id = format(span_context.trace_id, "032x")
         span_id = format(span_context.span_id, "016x")
-        note = get_object_or_404(Note, pk=pk) 
+        note = get_object_or_404(Note, pk=pk)
         if request.method == "POST":
             note.delete()
-            logger.info(f"Deleted note with id {pk}", extra={"trace_id": trace_id, "span_id": span_id})
-            response_times.record(time.time() - start_time)
+            elapsed_time = time.time() - start_time
+            response_times.record(elapsed_time, {"http.method": request.method, "trace_id": trace_id, "span_id": span_id})
             return redirect('note_list')
-        logger.info(f"Rendering note delete confirmation for note id {pk}", extra={"trace_id": trace_id, "span_id": span_id})
-        response_times.record(time.time() - start_time)
+        elapsed_time = time.time() - start_time
+        response_times.record(elapsed_time, {"http.method": request.method, "trace_id": trace_id, "span_id": span_id})
         return render(request, 'note_delete.html', {'note': note})
 
 def note_detail(request, pk):
@@ -82,6 +82,7 @@ def note_detail(request, pk):
         trace_id = format(span_context.trace_id, "032x")
         span_id = format(span_context.span_id, "016x")
         note = get_object_or_404(Note, pk=pk)
-        logger.info(f"Displaying details for note id {pk}", extra={"trace_id": trace_id, "span_id": span_id})
-        response_times.record(time.time() - start_time)
+        elapsed_time = time.time() - start_time
+        response_times.record(elapsed_time, {"http.method": request.method, "trace_id": trace_id, "span_id": span_id})
         return render(request, 'note_detail.html', {'note': note})
+
